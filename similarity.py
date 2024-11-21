@@ -1,6 +1,10 @@
 from difflib import SequenceMatcher
-
 from sentence_transformers import SentenceTransformer, util
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity as sklearn_cosine_similarity
+from Levenshtein import distance as levenshtein_distance
+from rapidfuzz import fuzz
+import textdistance
 
 
 def lcs_by_words(sentence1, sentence2):
@@ -97,6 +101,43 @@ def fuzzy_3gram_match(sequence1, sequence2, similarity_threshold=0.8):
     return True
 
 
+# Jaccard Similarity
+def jaccard_similarity(sentence1, sentence2):
+    set1 = set(sentence1.lower().split())
+    set2 = set(sentence2.lower().split())
+    return len(set1 & set2) / len(set1 | set2)
+
+# Levenshtein Distance / Edit Distance: Comparing structural similarity
+def levenshtein_similarity(sentence1, sentence2):
+    max_len = max(len(sentence1), len(sentence2))
+    return 1 - (levenshtein_distance(sentence1, sentence2) / max_len)
+
+# Cosine Similarity (Bag-of-Words)
+def cosine_similarity_bow(sentence1, sentence2):
+    vectorizer = CountVectorizer().fit_transform([sentence1, sentence2])
+    vectors = vectorizer.toarray()
+    return sklearn_cosine_similarity(vectors)[0][1]
+
+# Cosine Similarity (TF-IDF)
+def cosine_similarity_tfidf(sentence1, sentence2):
+    vectorizer = TfidfVectorizer().fit_transform([sentence1, sentence2])
+    return sklearn_cosine_similarity(vectorizer)[0][1]
+
+# Sentence Embeddings + Cosine Similarity
+def sentence_embedding_similarity(sentence1, sentence2):
+    model = SentenceTransformer("all-MiniLM-L6-v2")
+    embeddings = model.encode([sentence1, sentence2])
+    return util.cos_sim(embeddings[0], embeddings[1]).item()
+
+# Fuzzy Matching
+def fuzzy_similarity(sentence1, sentence2):
+    return fuzz.ratio(sentence1, sentence2) / 100
+
+# Jaro-Winkler Similarity: Detecting typos, near matches, prefixes
+def jaro_winkler_similarity(sentence1, sentence2):
+    return textdistance.jaro_winkler.normalized_similarity(sentence1, sentence2)
+
+
 # Example usage
 s1 = "ABCBDAB"
 s2 = "BDCAB"
@@ -142,3 +183,24 @@ print(f"The cosine similarity for word-level LCS: {cosine_similarity}")
 
 fuzzy_3gram_result = fuzzy_3gram_match(s1, s2)
 print(f"Fuzzy 3-gram match: {fuzzy_3gram_result}")
+
+jaccard_result = jaccard_similarity(s1, s2)
+print(f"Jaccard Similarity: {jaccard_result:.4f}")
+
+levenshtein_result = levenshtein_similarity(s1, s2)
+print(f"Levenshtein Similarity: {levenshtein_result:.4f}")
+
+cosine_bow_result = cosine_similarity_bow(s1, s2)
+print(f"Cosine Similarity (BoW): {cosine_bow_result:.4f}")
+
+cosine_tfidf_result = cosine_similarity_tfidf(s1, s2)
+print(f"Cosine Similarity (TF-IDF): {cosine_tfidf_result:.4f}")
+
+sentence_embedding_result = sentence_embedding_similarity(s1, s2)
+print(f"Sentence Embedding Similarity: {sentence_embedding_result:.4f}")
+
+fuzzy_result = fuzzy_similarity(s1, s2)
+print(f"Fuzzy Similarity: {fuzzy_result:.4f}")
+
+jaro_winkler_result = jaro_winkler_similarity(s1, s2)
+print(f"Jaro-Winkler Similarity: {jaro_winkler_result:.4f}")
