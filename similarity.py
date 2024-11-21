@@ -19,12 +19,18 @@ def lcs_by_words(sentence1, sentence2):
 
 
 # def lcs_by_characters(sentence1, sentence2):
+# """
+# Generate Least Common Subsequence (LCS) of two strings by characters using `pylcs`.
+# """
 #     res = pylcs.lcs_sequence_idx(sentence1, sentence2)
 #     corpus_sentence = "".join([sentence2[i] for i in res if i != -1])
 #     return corpus_sentence
 
 
 def lcs_by_characters(str1, str2):
+    """
+    Generate Least Common Subsequence (LCS) of two strings by characters.
+    """
     m, n = len(str1), len(str2)
     # Create a 2D array to store the length of LCS
     dp = [[0] * (n + 1) for _ in range(m + 1)]
@@ -53,11 +59,13 @@ def lcs_by_characters(str1, str2):
     # Return the LCS as a string
     return "".join(reversed(lcs_result))
 
+
 def generate_ngrams(sequence, n=3):
     """
     Generate n-grams from a given sequence.
     """
-    return [tuple(sequence[i:i+n]) for i in range(len(sequence) - n + 1)]
+    return [tuple(sequence[i : i + n]) for i in range(len(sequence) - n + 1)]
+
 
 def fuzzy_3gram_match(sequence1, sequence2, similarity_threshold=0.8):
     """
@@ -87,6 +95,7 @@ def fuzzy_3gram_match(sequence1, sequence2, similarity_threshold=0.8):
 
     # If all 3-grams are found, return True
     return True
+
 
 # Example usage
 string1 = "ABCBDAB"
