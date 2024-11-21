@@ -1,4 +1,4 @@
-# Evaluating fuzzy matches between two strings
+# Evaluating the degree of similarity between two strings
 
 ## Setting up the Python environment using `uv`
 
