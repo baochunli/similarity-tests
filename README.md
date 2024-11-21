@@ -29,5 +29,5 @@ uv python pin 3.12
 ## Running the tests
 
 ```sh
-uv run lcs.py
+uv run similarity.py
 ```
