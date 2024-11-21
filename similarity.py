@@ -53,6 +53,40 @@ def lcs_by_characters(str1, str2):
     # Return the LCS as a string
     return "".join(reversed(lcs_result))
 
+def generate_ngrams(sequence, n=3):
+    """
+    Generate n-grams from a given sequence.
+    """
+    return [tuple(sequence[i:i+n]) for i in range(len(sequence) - n + 1)]
+
+def fuzzy_3gram_match(sequence1, sequence2, similarity_threshold=0.8):
+    """
+    Perform fuzzy 3-gram matching between two sequences.
+    """
+    # Tokenize the sequences
+    tokens1 = sequence1.split()
+    tokens2 = sequence2.split()
+
+    # Generate 3-grams for both sequences
+    ngrams1 = generate_ngrams(tokens1, n=3)
+    ngrams2 = generate_ngrams(tokens2, n=3)
+
+    # Check each 3-gram in sequence1 against sequence2
+    for ngram1 in ngrams1:
+        ngram_found = False
+        for ngram2 in ngrams2:
+            # Compute similarity between 3-grams
+            similarity = SequenceMatcher(None, ngram1, ngram2).ratio()
+            if similarity >= similarity_threshold:
+                ngram_found = True
+                break  # Stop checking this n-gram in sequence2
+
+        # If any 3-gram is not found, return False
+        if not ngram_found:
+            return False
+
+    # If all 3-grams are found, return True
+    return True
 
 # Example usage
 string1 = "ABCBDAB"
@@ -94,3 +128,7 @@ print(f"Word-level LCS: {word_lcs_sentence}")
 embedding = model.encode(word_lcs_sentence)
 cosine_similarity = util.pytorch_cos_sim(input_embedding, embedding)[0][0]
 print(f"The cosine similarity for word-level LCS: {cosine_similarity}")
+
+
+fuzzy_3gram_result = fuzzy_3gram_match(s1, s2)
+print(f"Fuzzy 3-gram match: {fuzzy_3gram_result}")
