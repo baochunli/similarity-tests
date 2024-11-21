@@ -1,0 +1,9 @@
+[project]
+name = "lcs"
+version = "0.1.0"
+description = "Testing Least Common Subsequence"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "sentence_transformers"
+]
