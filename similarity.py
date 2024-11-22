@@ -107,10 +107,12 @@ def jaccard_similarity(sentence1, sentence2):
     set2 = set(sentence2.lower().split())
     return len(set1 & set2) / len(set1 | set2)
 
+
 # Levenshtein Distance / Edit Distance: Comparing structural similarity
 def levenshtein_similarity(sentence1, sentence2):
     max_len = max(len(sentence1), len(sentence2))
     return 1 - (levenshtein_distance(sentence1, sentence2) / max_len)
+
 
 # Cosine Similarity (Bag-of-Words)
 def cosine_similarity_bow(sentence1, sentence2):
@@ -118,20 +120,23 @@ def cosine_similarity_bow(sentence1, sentence2):
     vectors = vectorizer.toarray()
     return sklearn_cosine_similarity(vectors)[0][1]
 
+
 # Cosine Similarity (TF-IDF)
 def cosine_similarity_tfidf(sentence1, sentence2):
     vectorizer = TfidfVectorizer().fit_transform([sentence1, sentence2])
     return sklearn_cosine_similarity(vectorizer)[0][1]
 
+
 # Sentence Embeddings + Cosine Similarity
 def sentence_embedding_similarity(sentence1, sentence2):
-    model = SentenceTransformer("all-MiniLM-L6-v2")
     embeddings = model.encode([sentence1, sentence2])
     return util.cos_sim(embeddings[0], embeddings[1]).item()
+
 
 # Fuzzy Matching
 def fuzzy_similarity(sentence1, sentence2):
     return fuzz.ratio(sentence1, sentence2) / 100
+
 
 # Jaro-Winkler Similarity: Detecting typos, near matches, prefixes
 def jaro_winkler_similarity(sentence1, sentence2):
@@ -141,9 +146,7 @@ def jaro_winkler_similarity(sentence1, sentence2):
 # Example usage
 s1 = "ABCBDAB"
 s2 = "BDCAB"
-print(
-    f"Character-level LCS of '{s1}' and '{s2}' is: '{lcs_by_characters(s1, s2)}'"
-)
+print(f"Character-level LCS of '{s1}' and '{s2}' is: '{lcs_by_characters(s1, s2)}'")
 
 s1 = "I am a student"
 s2 = "I am also a teacher"
