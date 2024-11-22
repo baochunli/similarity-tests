@@ -1,10 +1,13 @@
 from difflib import SequenceMatcher
-from sentence_transformers import SentenceTransformer, util
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity as sklearn_cosine_similarity
+
+import textdistance
 from Levenshtein import distance as levenshtein_distance
 from rapidfuzz import fuzz
-import textdistance
+from sentence_transformers import SentenceTransformer, util
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from sklearn.metrics.pairwise import (
+    cosine_similarity as sklearn_cosine_similarity,
+)
 
 
 def lcs_by_words(sentence1, sentence2):
@@ -146,7 +149,9 @@ def jaro_winkler_similarity(sentence1, sentence2):
 # Example usage
 s1 = "ABCBDAB"
 s2 = "BDCAB"
-print(f"Character-level LCS of '{s1}' and '{s2}' is: '{lcs_by_characters(s1, s2)}'")
+print(
+    f"Character-level LCS of '{s1}' and '{s2}' is: '{lcs_by_characters(s1, s2)}'"
+)
 
 s1 = "I am a student"
 s2 = "I am also a teacher"
