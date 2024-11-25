@@ -132,8 +132,9 @@ def cosine_similarity_tfidf(sentence1, sentence2):
 
 # Sentence Embeddings + Cosine Similarity
 def sentence_embedding_similarity(sentence1, sentence2):
-    embeddings = model.encode([sentence1, sentence2])
-    return util.cos_sim(embeddings[0], embeddings[1]).item()
+    s1_emb = model.encode(sentence1, convert_to_tensor=True)
+    s2_emb = model.encode(sentence2, convert_to_tensor=True)
+    return util.pytorch_cos_sim(s1_emb, s2_emb)[0][0]
 
 
 # Fuzzy Matching
@@ -149,9 +150,7 @@ def jaro_winkler_similarity(sentence1, sentence2):
 # Example usage
 s1 = "ABCBDAB"
 s2 = "BDCAB"
-print(
-    f"Character-level LCS of '{s1}' and '{s2}' is: '{lcs_by_characters(s1, s2)}'"
-)
+print(f"Character-level LCS of '{s1}' and '{s2}' is: '{lcs_by_characters(s1, s2)}'")
 
 s1 = "I am a student"
 s2 = "I am also a teacher"
@@ -175,19 +174,19 @@ s2 = " I got asked this a week before the end of summer vacation a question whic
 print("Loading the embedding model...")
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
-input_embedding = model.encode([s2])[0]
+# input_embedding = model.encode([s2])[0]
 
 char_lcs_sentence = lcs_by_characters(s1, s2)
 print(f"Character-level LCS: {char_lcs_sentence}")
-embedding = model.encode(char_lcs_sentence)
-cosine_similarity = util.pytorch_cos_sim(input_embedding, embedding)[0][0]
-print(f"The cosine similarity for character-level LCS: {cosine_similarity}")
+# embedding = model.encode(char_lcs_sentence)
+# cosine_similarity = util.pytorch_cos_sim(input_embedding, embedding)[0][0]
+# print(f"The cosine similarity for character-level LCS: {cosine_similarity}")
 
 word_lcs_sentence = lcs_by_words(s1, s2)
 print(f"Word-level LCS: {word_lcs_sentence}")
-embedding = model.encode(word_lcs_sentence)
-cosine_similarity = util.pytorch_cos_sim(input_embedding, embedding)[0][0]
-print(f"The cosine similarity for word-level LCS: {cosine_similarity}")
+# embedding = model.encode(word_lcs_sentence)
+# cosine_similarity = util.pytorch_cos_sim(input_embedding, embedding)[0][0]
+# print(f"The cosine similarity for word-level LCS: {cosine_similarity}")
 
 fuzzy_3gram_result = fuzzy_3gram_match(s1, s2)
 print(f"Fuzzy 3-gram match: {fuzzy_3gram_result}")
