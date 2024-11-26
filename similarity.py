@@ -172,7 +172,8 @@ Below is an instruction that describes a task, paired with an input that provide
 s2 = " I got asked this a week before the end of summer vacation a question which asked, of course in what had been a beautiful, beautiful and beautiful summer, to do. I had to get back from a, but summer vacation which was to leave. the way and the had that for so you are time to a time, to and for you, to you to time and. the was to was, a and you to to be a the. the summer and summer. to for, to by's from summer and to for., and as of, and an you an. you. is summer, that or to, but summer. to. that and I. is the was but. that, in had, of is. summer a, is the. to and. on summer. because the, he, is and the. you the time the the and a from the to, has. or. to, that is, was the. the. but day. to the.. a to a the. it. have it is. of. to an a the a because to. or for to or to a summer, to is. the a of time of a the and the. season a the, a. that but year with was. that and"
 
 print("Loading the embedding model...")
-model = SentenceTransformer("all-MiniLM-L6-v2")
+# model = SentenceTransformer("all-MiniLM-L6-v2")
+model = SentenceTransformer("Snowflake/snowflake-arctic-embed-s")
 
 # input_embedding = model.encode([s2])[0]
 
